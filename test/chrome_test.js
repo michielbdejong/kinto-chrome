@@ -42,17 +42,17 @@ describe("StorageArea", () => {
 
   /** @test {StorageArea#constructor} */
   describe("#constructor", () => {
-    it("should expose endpoint and areaName", () => {
-      const area = new StorageArea("http://localhost:8080/v1/", "sync");
+    it("should expose areaName and config", () => {
+      const area = new StorageArea("sync", { endpoint: "http://localhost:8080/v1/" });
       expect(area.areaName).to.eql("sync");
-      expect(area.endpoint).to.eql("http://localhost:8080/v1/");
+      expect(area.config.endpoint).to.eql("http://localhost:8080/v1/");
     });
   });
 
   /** @test {StorageArea#set} */
   describe("#set", () => {
     it("set/get a value in IDB", (done) => {
-      const area = new StorageArea("http://localhost:8080/v1/", "sync");
+      const area = new StorageArea("sync");
 
       area.set({"something": 1}, function () {
         area.get("something", function(items) {
@@ -63,7 +63,7 @@ describe("StorageArea", () => {
     });
 
     it("set/remove a value in IDB", (done) => {
-      const area = new StorageArea("http://localhost:8080/v1/", "sync");
+      const area = new StorageArea("sync");
 
       area.set({"something": 1}, function () {
         area.remove("something", function() {
@@ -82,7 +82,7 @@ describe("StorageArea", () => {
   describe("#get", () => {
 
     it("get a unexisting keys won't set a attribute", (done) => {
-      const area = new StorageArea("http://localhost:8080/v1/", "sync");
+      const area = new StorageArea("sync");
       area.get("something", function(items) {
         expect(items.something).to.be.undefined;
             done();
@@ -90,7 +90,7 @@ describe("StorageArea", () => {
     });
 
    it("get(null) returns all keys", (done) => {
-      const area = new StorageArea("http://localhost:8080/v1/", "sync");
+      const area = new StorageArea("sync");
 
       area.set({"something": 1}, function () {
         area.set({"else": 2}, function () {
