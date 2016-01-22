@@ -8,8 +8,11 @@
       <button onclick="saveChanges()">Save</button>
 
     <!--script src="kinto-1.1.1.js"></script-->
-    <script src="chrome_es5.js"></script>
+    <script src="storage_es5.js"></script>
     <script>
+      // Make e.g. chrome.storage.sync an alias for storage.sync:
+      chrome = { storage };
+
       // example from the https://developer.chrome.com/extensions/storage page
       function saveChanges() {
         // Get a value saved in a form.

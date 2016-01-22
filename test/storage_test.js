@@ -2,7 +2,7 @@
 
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import {StorageChange, StorageChangeEvent, StorageArea} from "../lib/chrome";
+import {StorageChange, StorageChangeEvent, StorageArea} from "../lib/storage";
 
 chai.use(chaiAsPromised);
 chai.should();

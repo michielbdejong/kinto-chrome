@@ -1,10 +1,10 @@
 {
   "name": "kinto-chrome",
   "version": "0.1.0",
-  "description": "chrome.storage.sync wrapper for Kinto.",
-  "main": "lib/chrome.js",
+  "description": "storage.sync wrapper for Kinto.",
+  "main": "lib/storage.js",
   "scripts": {
-    "dist": "ulimit -n 2560 && ./node_modules/.bin/browserify -d -s chrome -e lib/chrome.js -o demo/chrome_es5.js -t [ babelify --presets [ es2015 ] --sourceMapRelative . ]",
+    "dist": "ulimit -n 2560 && ./node_modules/.bin/browserify -d -s storage -e lib/storage.js -o demo/storage_es5.js -t [ babelify --presets [ es2015 ] --sourceMapRelative . ]",
     "test": "npm run lint && npm run test-nocover",
     "test-nocover": "node_modules/.bin/_mocha --require ./test/_setup.js 'test/**/*_test.js'",
     "lint": "eslint lib/"
