@@ -21,7 +21,7 @@ var profileDir = OS.Constants.Path.profileDir;
 
 this.ExtensionStorage = {
   cache: new Map(),
-  listeners: new Map(),
+  eventManagers: new Map(),
 
   extensionDir: Path.join(profileDir, "browser-extension-data"),
 
@@ -31,6 +31,13 @@ this.ExtensionStorage = {
 
   getStorageFile(extensionId) {
     return Path.join(this.extensionDir, extensionId, "storage.js");
+  },
+
+  fireChangeEvents(extensionId, changes) {
+    const eventManager = this.eventMangers.get(extensionId);
+    if (eventManager) {
+      eventManager(changes, 'local');
+    }
   },
 
   read(extensionId) {
@@ -81,12 +88,7 @@ this.ExtensionStorage = {
         extData[prop] = items[prop];
       }
 
-      let listeners = this.listeners.get(extensionId);
-      if (listeners) {
-        for (let listener of listeners) {
-          listener(changes);
-        }
-      }
+      fireChangeEvents(extensionId, changes);
 
       return this.write(extensionId);
     });
@@ -106,12 +108,7 @@ this.ExtensionStorage = {
         delete extData[prop];
       }
 
-      let listeners = this.listeners.get(extensionId);
-      if (listeners) {
-        for (let listener of listeners) {
-          listener(changes);
-        }
-      }
+      fireChangeEvents(extensionId, changes);
 
       return this.write(extensionId);
     });
@@ -147,15 +144,12 @@ this.ExtensionStorage = {
     });
   },
 
-  addOnChangedListener(extensionId, listener) {
-    let listeners = this.listeners.get(extensionId) || new Set();
-    listeners.add(listener);
-    this.listeners.set(extensionId, listeners);
+  setEventManager(extensionId, em) {
+    this.eventManagers.set(extensionId, em);
   },
 
   removeOnChangedListener(extensionId, listener) {
-    let listeners = this.listeners.get(extensionId);
-    listeners.delete(listener);
+    this.eventManagers.delete(extensionId);
   },
 
   init() {

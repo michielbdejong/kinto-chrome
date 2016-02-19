@@ -1,7 +1,7 @@
 var { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 
-XPCOMUtils.defineLazyModuleGetter(this, "ExtensionStorage",
-                                  "resource://gre/modules/ExtensionStorage.jsm");
+XPCOMUtils.defineLazyModuleGetter(this, "ExtensionStorageLocal",
+                                  "resource://gre/modules/ExtensionStorageLocal.jsm");
 
 Cu.import("resource://gre/modules/ExtensionUtils.jsm");
 var {
@@ -15,19 +15,19 @@ extensions.registerPrivilegedAPI("storage", (extension, context) => {
     storage: {
       local: {
         get: function(keys, callback) {
-          ExtensionStorage.get(extension.id, keys).then(result => {
+          ExtensionStorageLocal.get(extension.id, keys).then(result => {
             runSafe(context, callback, result);
           });
         },
         set: function(items, callback) {
-          ExtensionStorage.set(extension.id, items).then(() => {
+          ExtensionStorageLocal.set(extension.id, items).then(() => {
             if (callback) {
               runSafe(context, callback);
             }
           });
         },
         remove: function(items, callback) {
-          ExtensionStorage.remove(extension.id, items).then(() => {
+          ExtensionStorageLocal.remove(extension.id, items).then(() => {
             if (callback) {
               runSafe(context, callback);
             }
@@ -35,14 +35,10 @@ extensions.registerPrivilegedAPI("storage", (extension, context) => {
         },
       },
 
-      onChanged: new EventManager(context, "storage.local.onChanged", fire => {
-        let listener = changes => {
-          fire(changes, "local");
-        };
-
-        ExtensionStorage.addOnChangedListener(extension.id, listener);
+      onChanged: new EventManager(context, "storage.onChanged", fire => {
+        ExtensionStorage.setEventManager(extension.id, fire);
         return () => {
-          ExtensionStorage.removeOnChangedListener(extension.id, listener);
+          ExtensionStorage.removeEventManager(extension.id, fire);
         };
       }).api(),
     },
