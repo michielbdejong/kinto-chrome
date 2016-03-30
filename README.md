@@ -9,6 +9,7 @@ compatible wrapper around Kinto.js.
 To see the demo, run:
 
 ````bash
+nvm use 0.12
 npm install
 npm run dist
 cd demo ; python -m SimpleHTTPServer
