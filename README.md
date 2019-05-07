@@ -1,7 +1,7 @@
 kinto-chrome
 ============
 
-[![Build Status](https://travis-ci.org/kinto/kinto-chrome.svg?branch=master)](https://travis-ci.org/kinto/kinto-chrome)
+[![Build Status](https://travis-ci.org/kinto/kinto-chrome.svg?branch=master)](https://travis-ci.org/kinto/kinto-chrome) [![Greenkeeper badge](https://badges.greenkeeper.io/michielbdejong/storage-sync.svg)](https://greenkeeper.io/)
 
 Prototype project to build a [chrome.storage.sync](https://developer.chrome.com/extensions/storage)
 compatible wrapper around Kinto.js.
